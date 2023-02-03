@@ -1,31 +1,96 @@
 from django.shortcuts import render
 from django.http import Http404
 
-blog_posts = {
-    "My first post": "Welcome dear readers!",
-    "My second post": "This is getting very tedious.",
-    "My third post": "I'm not sure I want to blog anymore.",
-    "My fourth post": "Ok I'm about to quit, it ain't that fun."
-}
+from datetime import date
+
+all_posts = [
+    {
+        "slug": "hike-in-the-mountains",
+        "image": "mountains.jpg",
+        "author": "Maximilian",
+        "date": date(2021, 7, 21),
+        "title": "Mountain Hiking",
+        "excerpt": "There's nothing like the views you get when hiking in the mountains! And I wasn't even prepared for what happened whilst I was enjoying the view!",
+        "content": """
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+        """
+    },
+    {
+        "slug": "programming-is-fun",
+        "image": "coding.jpg",
+        "author": "Maximilian",
+        "date": date(2022, 3, 10),
+        "title": "Programming Is Great!",
+        "excerpt": "Did you ever spend hours searching that one error in your code? Yep - that's what happened to me yesterday...",
+        "content": """
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+        """
+    },
+    {
+        "slug": "into-the-woods",
+        "image": "woods.jpg",
+        "author": "Maximilian",
+        "date": date(2020, 8, 5),
+        "title": "Nature At Its Best",
+        "excerpt": "Nature is amazing! The amount of inspiration I get when walking in nature is incredible!",
+        "content": """
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
+          aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
+          velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
+        """
+    }
+]
+
+# Temporary utility function
+def get_date(post):
+    return post['date']
 
 # Create your views here.
-def index(request): 
-    posts_snapshot = list(blog_posts.keys())
+def index(request):
+    sorted_posts = sorted(all_posts, key=get_date)
+    latest_posts = sorted_posts[-3:]
     return render(request, "blog/index.html", {
-        "posts_snapshot": posts_snapshot
+        "posts": latest_posts
     })
 
 def posts(request):
     return render(request, "blog/all-posts.html", {
-       "blog_posts": blog_posts
+       "all_posts": all_posts
     })
 
-def post (request, post):
+def post(request, slug):
     try:
-        current_post = blog_posts[post]
+        identified_post = next(post for post in all_posts if post['slug'] == slug)
         return render(request, "blog/single-post.html", {
-            "post_title": post,
-            "current_post": current_post
+            "post": identified_post
         })
     except:
         raise Http404()

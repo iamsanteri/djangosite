@@ -3,8 +3,9 @@
 {% load static %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'blog/all-posts.css' %}">
-    <link rel="stylesheet" href="{% static 'blog/includes/header.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/all-posts.css' %}" />
+    <link rel="stylesheet" href="{% static 'blog/includes/header.css' %}" />
+    <link rel="stylesheet" href="{% static 'blog/includes/post.css' %}" />
 {% endblock %}
 
 {% block page_title %} All posts! {% endblock %}
@@ -13,12 +14,13 @@
 
 {% include "blog/includes/header.html" %}
 
-<h1>All posts</h1>
+<section id="all-posts">
+    <h2>My Collected Posts</h2>
     <ul>
-        {% for post in blog_posts %}
-            <li><a href="{% url 'single_post' post %}">{{ post }}</a></li>
+        {% for post in all_posts %}
+            {% include "blog/includes/post.html" %}
         {% endfor %}
     </ul>
-<p>Go back to <a href="{% url 'index' %}">home page</a><p>
+</section>
 
 {% endblock %}
