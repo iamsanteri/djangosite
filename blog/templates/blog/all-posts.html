@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'blog/all-posts.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/includes/header.css' %}">
+{% endblock %}
+
+{% block page_title %} All posts! {% endblock %}
+
+{% block content %}
+
+{% include "blog/includes/header.html" %}
+
+<h1>All posts</h1>
+    <ul>
+        {% for post in blog_posts %}
+            <li><a href="{% url 'single_post' post %}">{{ post }}</a></li>
+        {% endfor %}
+    </ul>
+<p>Go back to <a href="{% url 'index' %}">home page</a><p>
+
+{% endblock %}
